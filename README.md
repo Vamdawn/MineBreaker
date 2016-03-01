@@ -1,4 +1,4 @@
 # MineBreaker
 Playing Mine-Sweeper automatically     
 for studying    
-We are new :joy
+We are new :joy:
