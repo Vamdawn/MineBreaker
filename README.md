@@ -1,4 +1,3 @@
 # MineBreaker
 Playing Mine-Sweeper automatically     
-for studying 
- We are new
+for studying    We are new
