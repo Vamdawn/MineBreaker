@@ -1,4 +1,4 @@
 # MineBreaker
 Playing Mine-Sweeper automatically     
-for studying
+for studying 
 We are new
