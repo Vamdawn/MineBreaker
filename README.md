@@ -1,3 +1,3 @@
 # MineBreaker
-Playing Mine-Sweeper automatically\n
+Playing Mine-Sweeper automatically     
 for studying
