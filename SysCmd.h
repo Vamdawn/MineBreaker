@@ -5,7 +5,7 @@
 #include <windows.h>
 #include <stdlib.h>
 #include <iostream>
-
+#include <ctime>
 
 class Mouse
 {
@@ -32,7 +32,9 @@ public:
 	{
 		MoveTo(x * 16 + 16, y * 16 + 102);
 		LeftClick();
-	}
+        //std::cout << "click (" << x << ", " << y << ")" << std::endl;
+        Sleep(100);
+    }
 	void MoveTo(const int x, const int y)		{ SetCursorPos(x, y); }
 	int getX()	{ up_info(); return PosX; }
 	int getY()	{ up_info(); return PosY; }
@@ -75,25 +77,24 @@ public:
 		_itoa_s(PIXEL, strPIXEL, DefaultLength, radix);
 		std::cout << strPIXEL << " -- " << radix << " radix";
 	}
-	int number(const int j, const int i)
+	int number(const int x, const int y)
 	{
-		long pixel = GetPixel(THIS_HDC, j * 16 + 16, i * 16 + 102);
+		long pixel = GetPixel(THIS_HDC, x * 16 + 16, y * 16 + 102);
 
 		if (pixel > 15000000)
 		{
-			return 0;
+			return 99;  //undecovered
 		}
-
 		else
 		{
-			pixel = GetPixel(THIS_HDC, j * 16 + 24, i * 16 + 112);
+			pixel = GetPixel(THIS_HDC, x * 16 + 24, y * 16 + 112);
 			if (pixel == 0)
 			{
-				return 99;
+				return -99;  //Mine
 			}
 			else if (pixel == 12632256)
 			{
-				return -1;
+				return 0;
 			}
 			else if (pixel == 16711680)
 			{
@@ -119,8 +120,6 @@ public:
 			{
 				return 6;
 			}
-
-
 		}
 	}
 private:
@@ -134,8 +133,17 @@ private:
 
 
 
-class KeyBoard;
+class KeyBoard
+{
+public:
+    void Press(BYTE value)
+    {
+        keybd_event(value, 0, 0, 0);
+        keybd_event(value, 0, KEYEVENTF_KEYUP, 0);
+    }
+private:
 
+};
 
 
 #endif
