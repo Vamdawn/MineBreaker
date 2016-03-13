@@ -6,50 +6,46 @@
 #include <stdlib.h>
 #include <iostream>
 
-#define MOUSEEVENT_LEFTDOWN MLD
-#define MOUSEEVENT_LEFTUP MLU
-#define MOUSEEVENT_RIGHTDOWN MRD
-#define MOUSEEVENT_RIGHTUP MRU
 
 class Mouse
 {
 public:
 	void LeftClick(const int times = 1)
 	{
-		for(int i = 0; i != times; ++i)
+		for (int i = 0; i != times; ++i)
 		{
 			//mouse_event(MLD, 0, 0, 0, 0);
 			//mouse_event(MLU, 0, 0, 0, 0);
-			mouse_event(MLD | MLU, 0, 0, 0, 0);
+			mouse_event(MOUSEEVENTF_LEFTDOWN| MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
 		}
 	}
 	void RightClick(const int times = 1)
 	{
-		for(int i = 0; i != times; ++i)
+		for (int i = 0; i != times; ++i)
 		{
 			//mouse_event(MRD, 0, 0, 0, 0);
 			//mouse_event(MRU, 0, 0, 0, 0);
-			mouse_event(MRD | MRU, 0, 0, 0, 0);
+			mouse_event(MOUSEEVENTF_RIGHTDOWN| MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
 		}
 	}
 	void Click(const int x, const int y)
 	{
-		MoveTo(x, y);
+		MoveTo(x * 16 + 16, y * 16 + 102);
 		LeftClick();
 	}
 	void MoveTo(const int x, const int y)		{ SetCursorPos(x, y); }
 	int getX()	{ up_info(); return PosX; }
 	int getY()	{ up_info(); return PosY; }
 private:
-	Point Pos;
+	POINT Pos;
 	int PosX;
 	int PosY;
 
 	void up_info()
 	{
-		::GetPosCursor(&Pos);
-		PosX = Pos.X;
-		PosY = Pos.Y;
+		::GetCursorPos(&Pos);
+		PosX = Pos.x;
+		PosY = Pos.y;
 	}
 };
 
@@ -58,14 +54,14 @@ class Screen
 public:
 	Screen()
 	{
-		THIS_HDC = ::GetDC(NULL); 
-		DefaultLength = 50; 
-		*strPIXEL = new char[DefaultLength];
+		THIS_HDC = ::GetDC(NULL);
+		DefaultLength = 50;
+		strPIXEL = new char[DefaultLength];
 	}
-	~Screen()	
-	{ 
+	~Screen()
+	{
 		DeleteDC(THIS_HDC);
-		delete []strPIXEL;
+		delete[]strPIXEL;
 	}
 	long getPixel(const int x, const int y)
 	{
@@ -75,9 +71,57 @@ public:
 	}
 	void Print(int radix)
 	{
-		
+
 		_itoa_s(PIXEL, strPIXEL, DefaultLength, radix);
-		std::cout << strPIXEL << " -- " << radix << " radix"
+		std::cout << strPIXEL << " -- " << radix << " radix";
+	}
+	int number(const int j, const int i)
+	{
+		long pixel = GetPixel(THIS_HDC, j * 16 + 16, i * 16 + 102);
+
+		if (pixel > 15000000)
+		{
+			return 0;
+		}
+
+		else
+		{
+			pixel = GetPixel(THIS_HDC, j * 16 + 24, i * 16 + 112);
+			if (pixel == 0)
+			{
+				return 99;
+			}
+			else if (pixel == 12632256)
+			{
+				return -1;
+			}
+			else if (pixel == 16711680)
+			{
+				return 1;
+			}
+			else if (pixel == 32768)
+			{
+				return 2;
+			}
+			else if (pixel == 255)
+			{
+				return 3;
+			}
+			else if (pixel == 8388608)
+			{
+				return 4;
+			}
+			else if (pixel == 128)
+			{
+				return 5;
+			}
+			else if (pixel == 8421376)
+			{
+				return 6;
+			}
+
+
+		}
 	}
 private:
 	HDC THIS_HDC;
