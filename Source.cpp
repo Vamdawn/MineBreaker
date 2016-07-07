@@ -7,22 +7,31 @@
 
 using namespace std;
 
-int main()
+int main22()
 {
 	Mouse mm;
 	Screen ss;
 	int tt[8][8];
-	for (int i = 0; i < 8; ++i)
+    int x, y;
+    while (true)
+    {
+        cin >> x >> y;
+        /*if (x < 0 || x > 8 || y < 0 || y > 8)
+            break;
+        mm.Click(x, y);*/
+        mm.MoveTo(x, y);
+    }
+	/*for (int i = 0; i < 8; ++i)
 	{
 		mm.Click(i, i);
 		tt[i][i] = ss.number(i, i);
-		if (tt[i][i] == -1)
+		if (tt[i][i] == 0)
 		{
 			break;
 		}
-		else if(tt[i][i] == 99)
+		else if(tt[i][i] == -99)
 		{
-			
+            break;
 		}
 	}
 	for (int i = 0; i < 8; ++i)
@@ -33,10 +42,7 @@ int main()
 			cout << tt[j][i] << ' ';
 		}
 		cout << endl;
-	}
-
-
-	//CloseHandle(hOut); // 关闭标准输出设备句柄
+	}*/
 	system("pause");
 	return 0;
 }
